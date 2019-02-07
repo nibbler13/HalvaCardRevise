@@ -1,0 +1,194 @@
+﻿<Window x:Class="HalvaCardRevise.MainWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HalvaCardRevise"
+        mc:Ignorable="d"
+        Title="Сверка отчетов по картам &quot;Халва&quot;" 
+        Height="450" 
+        Width="800"
+        WindowStartupLocation="CenterScreen"
+        Background="#FFFAFAFA"
+        Icon="Icon.ico">
+    
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Visibility="{Binding GridMainVisibility}"
+              Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="Отчет по картам &quot;Халва&quot;" 
+                  Grid.ColumnSpan="2">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox IsReadOnly="True" 
+                         Text="{Binding HalvaCardReportFile, Mode=OneWay}"/>
+
+                    <Button Grid.Column="1" 
+                        Margin="10,0,0,0"
+                        Command="{Binding ButtonClick}"
+                        CommandParameter="SelectHalvaFile">
+                        <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
+                            <Image Source="Media/Select_16x.png"/>
+                            <TextBlock Text="Выбрать" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Grid.Row="1" 
+                  Header="Отчеты по терминалам &quot;Сбербанк&quot;"
+                  Margin="0,10,5,0">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <ListBox ItemsSource="{Binding ListFileSber}" 
+                         SelectionMode="Extended">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}" 
+                           BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                <Setter Property="IsSelected" 
+                                Value="{Binding IsSelected, Mode=TwoWay}"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+
+                    <StackPanel Grid.Row="1" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Center"
+                            Margin="0,10,0,0">
+                        <Button Command="{Binding ButtonClick}"
+                            CommandParameter="AddFileSber">
+                            <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
+                                <Image Source="Media/AddFile_16x.png"/>
+                                <TextBlock Text="Добавить" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Margin="10,0,0,0" 
+                            Command="{Binding ButtonRemoveFileSberClick}"
+                            CommandParameter="RemoveFileSber">
+                            <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
+                                <Image Source="Media/Remove_16x.png"/>
+                                <TextBlock Text="Удалить" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Grid.Row="1" 
+                  Grid.Column="1"
+                  Header="Отчеты по терминалам &quot;ВТБ&quot;" 
+                  Margin="5,10,0,0">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <ListBox ItemsSource="{Binding ListFileVtb}" 
+                         SelectionMode="Extended">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}" 
+                           BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                                <Setter Property="IsSelected" 
+                                Value="{Binding IsSelected, Mode=TwoWay}"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+
+                    <StackPanel Grid.Row="1" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Center"
+                            Margin="0,10,0,0">
+                        <Button Command="{Binding ButtonClick}"
+                            CommandParameter="AddFileVtb">
+                            <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
+                                <Image Source="Media/AddFile_16x.png"/>
+                                <TextBlock Text="Добавить" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Margin="10,0,0,0" 
+                            Command="{Binding ButtonRemoveFileVtbClick}"
+                            CommandParameter="RemoveFileVtb">
+                            <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
+                                <Image Source="Media/Remove_16x.png"/>
+                                <TextBlock Text="Удалить" Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+
+            <Button Grid.Row="2"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Center"
+                Margin="0,20,0,10"
+                Command="{Binding ButtonClick}"
+                CommandParameter="ExecuteRevise">
+                <StackPanel Orientation="Horizontal"
+                        Margin="10,0,10,0">
+                    <Image Source="Media/Run_16x.png"/>
+                    <TextBlock Text="Выполнить сверку" Margin="5,0,0,0"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <Grid Visibility="{Binding GridProgressVisibility}" 
+              Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBox IsReadOnly="True" 
+                     Text="{Binding ProgressInfo, Mode=OneWay}"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Visible"
+                     HorizontalScrollBarVisibility="Auto"
+                     local:TextBoxBehaviour.ScrollOnTextChanged="True"/>
+
+            <ProgressBar Grid.Row="1"
+                         Value="{Binding ProgressValue, Mode=OneWay}"
+                         Height="10"
+                         Margin="0,10,0,0"/>
+        </Grid>
+        
+        <Grid Grid.Row="1"
+              Height="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Source="Media/BottomLineTemplate.png" Stretch="Fill"/>
+            <Image Grid.Column="1" Source="Media/BottomLineContinuesClear.png"/>
+        </Grid>
+    </Grid>
+</Window>
