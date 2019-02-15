@@ -29,13 +29,8 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
 
-            <GroupBox Header="Отчет по картам &quot;Халва&quot;" 
-                  Grid.ColumnSpan="2">
+            <GroupBox Header="Отчет по картам &quot;Халва&quot;">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -58,7 +53,7 @@
             </GroupBox>
 
             <GroupBox Grid.Row="1" 
-                  Header="Отчеты по терминалам &quot;Сбербанк&quot;"
+                  Header="Отчеты по терминалам"
                   Margin="0,10,5,0">
                 <Grid Margin="5">
                     <Grid.RowDefinitions>
@@ -66,7 +61,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <ListBox ItemsSource="{Binding ListFileSber}" 
+                    <ListBox ItemsSource="{Binding ListFilesTerminal}" 
                          SelectionMode="Extended">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="{x:Type ListBoxItem}" 
@@ -82,7 +77,7 @@
                             HorizontalAlignment="Center"
                             Margin="0,10,0,0">
                         <Button Command="{Binding ButtonClick}"
-                            CommandParameter="AddFileSber">
+                            CommandParameter="AddFilesTerminal">
                             <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
                                 <Image Source="Media/AddFile_16x.png"/>
                                 <TextBlock Text="Добавить" Margin="5,0,0,0"/>
@@ -90,53 +85,8 @@
                         </Button>
 
                         <Button Margin="10,0,0,0" 
-                            Command="{Binding ButtonRemoveFileSberClick}"
-                            CommandParameter="RemoveFileSber">
-                            <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
-                                <Image Source="Media/Remove_16x.png"/>
-                                <TextBlock Text="Удалить" Margin="5,0,0,0"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                </Grid>
-            </GroupBox>
-
-            <GroupBox Grid.Row="1" 
-                  Grid.Column="1"
-                  Header="Отчеты по терминалам &quot;ВТБ&quot;" 
-                  Margin="5,10,0,0">
-                <Grid Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <ListBox ItemsSource="{Binding ListFileVtb}" 
-                         SelectionMode="Extended">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="{x:Type ListBoxItem}" 
-                           BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                                <Setter Property="IsSelected" 
-                                Value="{Binding IsSelected, Mode=TwoWay}"/>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                    </ListBox>
-
-                    <StackPanel Grid.Row="1" 
-                            Orientation="Horizontal" 
-                            HorizontalAlignment="Center"
-                            Margin="0,10,0,0">
-                        <Button Command="{Binding ButtonClick}"
-                            CommandParameter="AddFileVtb">
-                            <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
-                                <Image Source="Media/AddFile_16x.png"/>
-                                <TextBlock Text="Добавить" Margin="5,0,0,0"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Margin="10,0,0,0" 
-                            Command="{Binding ButtonRemoveFileVtbClick}"
-                            CommandParameter="RemoveFileVtb">
+                            Command="{Binding ButtonRemoveFileTerminalClick}"
+                            CommandParameter="RemoveFilesTerminal">
                             <StackPanel Orientation="Horizontal" Margin="10,0,10,0">
                                 <Image Source="Media/Remove_16x.png"/>
                                 <TextBlock Text="Удалить" Margin="5,0,0,0"/>
@@ -147,11 +97,11 @@
             </GroupBox>
 
             <Button Grid.Row="2"
-                Grid.ColumnSpan="2"
                 HorizontalAlignment="Center"
                 Margin="0,20,0,10"
                 Command="{Binding ButtonClick}"
                 CommandParameter="ExecuteRevise">
+                <!--Grid.ColumnSpan="2"-->
                 <StackPanel Orientation="Horizontal"
                         Margin="10,0,10,0">
                     <Image Source="Media/Run_16x.png"/>

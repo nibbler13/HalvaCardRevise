@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace HalvaCardRevise {
 	class Revise {
-		private ItemFileInfo halvaCardInfo;
-		private List<ItemFileInfo> terminalFiles;
-		private BackgroundWorker backgroundWorker;
+		private readonly ItemFileInfo halvaCardInfo;
+		private readonly List<ItemFileInfo> terminalFiles;
+		private readonly BackgroundWorker backgroundWorker;
 		private double currentProgress;
 
 		public Revise(ItemFileInfo halvaCardInfo, List<ItemFileInfo> terminalFiles, BackgroundWorker backgroundWorker) {
@@ -39,7 +39,7 @@ namespace HalvaCardRevise {
 			long totalLinesReaded = 0;
 			foreach (ItemFileInfo fileInfo in terminalFiles) {
 				UpdateProgress(currentProgress, "Чтение файла: " + fileInfo.FileName);
-				ExcelFileContentReader.ReadExcelFileContent(fileInfo);
+				UpdateProgress(currentProgress, "Тип файла: " + ExcelFileContentReader.ReadExcelFileContent(fileInfo));
 
 				currentProgress += progressPerFile;
 				UpdateProgress(currentProgress, "Считано строк: " + fileInfo.FileContents.Count);
@@ -69,7 +69,7 @@ namespace HalvaCardRevise {
 							continue;
 
 						foreach (FileContent terminalContent in searchResults) {
-							if (!ChechCoincidence(halvaContent, terminalContent, out int coin, out string comm))
+							if (!CheckCoincidence(halvaContent, terminalContent, out int coin, out string comm))
 								continue;
 							
 							halvaContent.Comment += "Уникальный номер операции (RNN); ";
@@ -92,7 +92,7 @@ namespace HalvaCardRevise {
 						else
 							halvaContent.Comment += "Код авторизации; ";
 
-						ChechCoincidence(halvaContent, terminalContent, out int coin, out string comm);
+						CheckCoincidence(halvaContent, terminalContent, out int coin, out string comm);
 						coincidence += coin;
 						halvaContent.Comment += comm;
 					}
@@ -126,7 +126,7 @@ namespace HalvaCardRevise {
 			backgroundWorker.ReportProgress((int)progressValue, progressInfo);
 		}
 
-		private bool ChechCoincidence(FileContent halvaContent, FileContent terminalContent, out int coincidence, out string comment) {
+		private bool CheckCoincidence(FileContent halvaContent, FileContent terminalContent, out int coincidence, out string comment) {
 			coincidence = 0;
 			comment = string.Empty;
 			bool errorDate = false;

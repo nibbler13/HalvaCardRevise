@@ -9,7 +9,13 @@ using System.Threading.Tasks;
 
 namespace HalvaCardRevise {
 	class ExcelFileContentReader {
-		public static void ReadExcelFileContent(ItemFileInfo itemFileInfo) {
+		private enum FileType {
+			Sberbank,
+			Vtb,
+			Soyuz,
+			Unknown
+		}
+		public static string ReadExcelFileContent(ItemFileInfo itemFileInfo) {
 			IWorkbook workbook;
 			using (FileStream file = new FileStream(itemFileInfo.FullPath, FileMode.Open, FileAccess.Read)) {
 				workbook = new XSSFWorkbook(file);
@@ -23,8 +29,23 @@ namespace HalvaCardRevise {
 			int cellCommittingDate = 0;
 			int cellCommittingTime = 0;
 
-			switch (itemFileInfo.Type) {
-				case ItemFileInfo.FileType.Sberbank:
+			FileType type = FileType.Unknown;
+			ISheet sheet = workbook.GetSheetAt(0);
+
+			try {
+				IRow row = sheet.GetRow(0);
+				string firstValue = GetCellValue(row.GetCell(0)).ToLower();
+				if (firstValue.StartsWith("номер_терминала"))
+					type = FileType.Soyuz;
+				else if (firstValue.StartsWith("отчет о возмещении денежных средств предприятию"))
+					type = FileType.Sberbank;
+				else if (firstValue.StartsWith("отчёт по обработанным операциям за период"))
+					type = FileType.Vtb;
+			} catch (Exception) { }
+
+
+			switch (type) {
+				case FileType.Sberbank:
 					startRow = 2;
 					cellRNN = 0;
 					cellAuthorizationCode = 21;
@@ -33,7 +54,7 @@ namespace HalvaCardRevise {
 					cellCommittingDate = 8;
 					cellCommittingTime = 8;
 					break;
-				case ItemFileInfo.FileType.Vtb:
+				case FileType.Vtb:
 					startRow = 12;
 					cellRNN = 13;
 					cellAuthorizationCode = 6;
@@ -42,11 +63,19 @@ namespace HalvaCardRevise {
 					cellCommittingDate = 4;
 					cellCommittingTime = 5;
 					break;
-				default:
+				case FileType.Soyuz:
+					startRow = 1;
+					cellRNN = 5;
+					cellAuthorizationCode = 6;
+					cellOperationAmount = 7;
+					cellCardNumber = 4;
+					cellCommittingDate = 2;
+					cellCommittingTime = 3;
 					break;
+				default:
+					return type.ToString();
 			}
 
-			ISheet sheet = workbook.GetSheetAt(0);
 			for (int rowCount = startRow; rowCount <= sheet.LastRowNum; rowCount++) {
 				try {
 					IRow row = sheet.GetRow(rowCount);
@@ -67,12 +96,26 @@ namespace HalvaCardRevise {
 					string committingDate = GetCellValue(row.GetCell(cellCommittingDate));
 					string committingTime = GetCellValue(row.GetCell(cellCommittingTime));
 
-					if (itemFileInfo.Type == ItemFileInfo.FileType.Sberbank) {
+					if (type == FileType.Sberbank) {
 						string[] splittedDateTime = committingDate.Split(' ');
 						if (splittedDateTime.Length == 2) {
 							committingDate = splittedDateTime[0];
 							committingTime = splittedDateTime[1];
 						}
+					}
+
+					if (type == FileType.Soyuz) {
+						if (committingDate.Length == 8)
+							committingDate = 
+								committingDate.Substring(6, 2) + "." +
+								committingDate.Substring(4, 2) + "." +
+								committingDate.Substring(0, 4);
+
+						if (committingTime.Length == 6)
+							committingTime =
+								committingTime.Substring(0, 2) + ":" +
+								committingTime.Substring(2, 2) + ":" +
+								committingTime.Substring(4, 2);
 					}
 
 					FileContent fileContent = new FileContent {
@@ -93,6 +136,7 @@ namespace HalvaCardRevise {
 			}
 
 			workbook.Close();
+			return type.ToString();
 		}
 
 		private static string GetCellValue(ICell cell) {

@@ -29,27 +29,15 @@ namespace HalvaCardRevise {
 		}
 
 
-		private bool CanExecuteRemoveFileSber {
-			get { return ListFileSber.Where(x => x.IsSelected).Count() > 0; }
+		private bool CanExecuteRemoveFileTerminal {
+			get { return ListFilesTerminal.Where(x => x.IsSelected).Count() > 0; }
 		}
-		private ICommand buttonRemoveFileSberClick;
-		public ICommand ButtonRemoveFileSberClick {
+		private ICommand buttonRemoveFileTerminalClick;
+		public ICommand ButtonRemoveFileTerminalClick {
 			get {
-				return buttonRemoveFileSberClick ??
-					(buttonRemoveFileSberClick = new CommandHandler((object parameter) => 
-					RemoveFileFromList(parameter), param => CanExecuteRemoveFileSber));
-			}
-		}
-
-		private bool CanExecuteRemoveFileVtb {
-			get { return ListFileVtb.Where(x => x.IsSelected).Count() > 0; }
-		}
-		private ICommand buttonRemoveFileVtbClick;
-		public ICommand ButtonRemoveFileVtbClick {
-			get {
-				return buttonRemoveFileVtbClick ??
-					(buttonRemoveFileVtbClick = new CommandHandler((object parameter) =>
-					RemoveFileFromList(parameter), param => CanExecuteRemoveFileVtb));
+				return buttonRemoveFileTerminalClick ??
+					(buttonRemoveFileTerminalClick = new CommandHandler((object parameter) => 
+					RemoveFileFromList(parameter), param => CanExecuteRemoveFileTerminal));
 			}
 		}
 		
@@ -66,8 +54,7 @@ namespace HalvaCardRevise {
 		}
 
 
-		public ObservableCollection<ItemFileInfo> ListFileSber { get; set; }
-		public ObservableCollection<ItemFileInfo> ListFileVtb { get; set; }
+		public ObservableCollection<ItemFileInfo> ListFilesTerminal { get; set; }
 
 
 		private Visibility gridMainVisibility;
@@ -118,50 +105,47 @@ namespace HalvaCardRevise {
 
 
 		public MainWindowViewModel() {
-			ListFileSber = new ObservableCollection<ItemFileInfo>();
-			ListFileVtb = new ObservableCollection<ItemFileInfo>();
+			ListFilesTerminal = new ObservableCollection<ItemFileInfo>();
 			GridMainVisibility = Visibility.Visible;
 			GridProgressVisibility = Visibility.Hidden;
 
 			if (Debugger.IsAttached) {
 				halvaCardReportFile = new ItemFileInfo(
-					@"C:\Users\nn-admin\Desktop\Халва\Халва\" + 
-					@"ООО _Клиника ЛМС__7704544391_И_10.12.2018-0.csv", 
-					ItemFileInfo.FileType.Halva);
+					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\" +
+					@"ООО _Клиника ЛМС__7704544391_И_01.02.2019.csv");
 
-				ListFileSber.Add(new ItemFileInfo(
-					@"C:\Users\nn-admin\Desktop\Халва\Сбербанк\" + 
-					@"3248426 (3248426_СРБ) - Москва сретенка.xlsx", 
-					ItemFileInfo.FileType.Sberbank));
-				ListFileSber.Add(new ItemFileInfo(
-					@"C:\Users\nn-admin\Desktop\Халва\Сбербанк\" +
-					@"3277308 d.toropov@bzklinika.ru - Сочи.xlsx",
-					ItemFileInfo.FileType.Sberbank));
-				ListFileSber.Add(new ItemFileInfo(
-					@"C:\Users\nn-admin\Desktop\Халва\Сбербанк\"+
-					@"Отчет о возмещении денежных средств предприятию ООО Клиника ЛМС с 01.11.2018г. по 16.01.2019г. -Каменск-Уральский.xlsx",
-					ItemFileInfo.FileType.Sberbank));
+				ListFilesTerminal.Add(new ItemFileInfo(
+					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\Сбер\" +
+					@"3321112 (3321112_СРБ)-сретенка.xlsx"));
+				ListFilesTerminal.Add(new ItemFileInfo(
+					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\Сбер\" +
+					@"7704544391_17133645_5026412390406_M01 - Сочи.xlsx"));
+				ListFilesTerminal.Add(new ItemFileInfo(
+					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\Сбер\" +
+					@"7704544391_E4017003Q25527DO_4848334753986_M01 - Каменск.xlsx"));
 
-				ListFileVtb.Add(new ItemFileInfo(
-					@"C:\Users\nn-admin\Desktop\Халва\ВТБ\"+
-					@"h_01-11-2018-16-01-2019_ООО_Клиника_ЛМС_-ret_innxxx4391 - Казань.xlsx", 
-					ItemFileInfo.FileType.Vtb));
-				ListFileVtb.Add(new ItemFileInfo(
-					@"C:\Users\nn-admin\Desktop\Халва\ВТБ\" +
-					@"h_01-11-2018-16-01-2019_ООО_Клиника_ЛМС_-ret_innxxx4391 - Питер.xlsx",
-					ItemFileInfo.FileType.Vtb));
-				ListFileVtb.Add(new ItemFileInfo(
-					@"C:\Users\nn-admin\Desktop\Халва\ВТБ\" +
-					@"h_01-11-2018-16-01-2019_ООО_Клиника_ЛМС_-ret_innxxx5391 - Москва Сущевка, фрунзенская.xlsx",
-					ItemFileInfo.FileType.Vtb));
-				ListFileVtb.Add(new ItemFileInfo(
-					@"C:\Users\nn-admin\Desktop\Халва\ВТБ\" + 
-					@"h_01-11-2018-16-01-2019_Филиал_ООО_Клиника_ЛМС_в_г_Краснодаре-ret_innxxx4391 - Краснодар.xlsx",
-					ItemFileInfo.FileType.Vtb));
-				ListFileVtb.Add(new ItemFileInfo(
-					@"C:\Users\nn-admin\Desktop\Халва\ВТБ\" + 
-					@"h_01-11-2018-16-01-2019_Филиал_ООО_Клиника_ЛМС_в_г_Уфе-ret_innxxx4391 - Уфа.xlsx",
-					ItemFileInfo.FileType.Vtb));
+				ListFilesTerminal.Add(new ItemFileInfo(
+					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\ВТБ\" +
+					@"m_01-01-2019-31-01-2019_ООО_Клиника_ЛМС_-ret_innxxx4391 - Питер.xlsx"));
+				ListFilesTerminal.Add(new ItemFileInfo(
+					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\ВТБ\" +
+					@"m_01-01-2019-31-01-2019_ООО_Клиника_ЛМС_-ret_innxxx4391- Казань.xlsx"));
+				ListFilesTerminal.Add(new ItemFileInfo(
+					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\ВТБ\" +
+					@"m_01-01-2019-31-01-2019_Филиал_ООО_Клиника_ЛМС_в_г_Краснодаре-ret_innxxx4391 - Краснодар.xlsx"));
+				ListFilesTerminal.Add(new ItemFileInfo(
+					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\ВТБ\" +
+					@"m_01-01-2019-31-01-2019_Филиал_ООО_Клиника_ЛМС_в_г_Уфе-ret_innxxx4391 - Уфа.xlsx"));
+				ListFilesTerminal.Add(new ItemFileInfo(
+					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\ВТБ\" +
+					@"m_15-01-2019-15-01-2019_ООО_Клиника_ЛМС_-ret_innxxx5391 - Сущевка, фрунзенская.xlsx"));
+				ListFilesTerminal.Add(new ItemFileInfo(
+					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\ВТБ\" +
+					@"m_15-01-2019-15-01-2019_ООО_Клиника_ЛМС_-ret_innxxx5391.xlsx"));
+
+				ListFilesTerminal.Add(new ItemFileInfo(
+					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\Союз\" +
+					@"Будь_Здоров_201901.xlsx"));
 			}
 		}
 
@@ -170,11 +154,12 @@ namespace HalvaCardRevise {
 
 			if (param.Equals("SelectHalvaFile")) {
 				if (SelectScvFile(out string selectedFile))
-					HalvaCardReportFile = new ItemFileInfo(selectedFile, ItemFileInfo.FileType.Halva);
-			} else if (param.Equals("AddFileSber"))
-				SelectExcelFiles(ListFileSber, ItemFileInfo.FileType.Sberbank);
-			else if (param.Equals("AddFileVtb"))
-				SelectExcelFiles(ListFileVtb, ItemFileInfo.FileType.Vtb);
+					HalvaCardReportFile = new ItemFileInfo(selectedFile);
+			} 
+			
+			else if (param.Equals("AddFilesTerminal"))
+				SelectExcelFiles(ListFilesTerminal);
+
 			else if (param.Equals("ExecuteRevise"))
 				ExecuteRevise();
 		}
@@ -186,9 +171,8 @@ namespace HalvaCardRevise {
 				warningMessage += "Не выбран файл с отчетом по картам 'Халва'" + 
 					Environment.NewLine;
 
-			if (ListFileSber.Count + ListFileVtb.Count == 0)
-				warningMessage += "Не выбрано ни одного файла с отчетом по " +
-					"терминалам 'Сбербанк' / 'ВТБ'" + Environment.NewLine;
+			if (ListFilesTerminal.Count == 0)
+				warningMessage += "Не выбрано ни одного файла с отчетом по терминалам" + Environment.NewLine;
 
 			if (!string.IsNullOrEmpty(warningMessage)) {
 				MessageBox.Show(
@@ -235,10 +219,7 @@ namespace HalvaCardRevise {
 		}
 
 		private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
-			List<ItemFileInfo> terminalFiles = new List<ItemFileInfo>();
-			terminalFiles.AddRange(ListFileSber);
-			terminalFiles.AddRange(ListFileVtb);
-			Revise revise = new Revise(HalvaCardReportFile, terminalFiles, sender as BackgroundWorker);
+			Revise revise = new Revise(HalvaCardReportFile, ListFilesTerminal.ToList(), sender as BackgroundWorker);
 			revise.DoRevise();
 		}
 
@@ -247,22 +228,17 @@ namespace HalvaCardRevise {
 				text + Environment.NewLine;
 		}
 
-		private void SelectExcelFiles(ObservableCollection<ItemFileInfo> collection, ItemFileInfo.FileType type) {
+		private void SelectExcelFiles(ObservableCollection<ItemFileInfo> collection) {
 			if (!SelectExcelFiles(out string[] selectedFiles))
 				return;
 
 			foreach (string selectedFile in selectedFiles)
 				if (collection.Where(x => x.FullPath.Equals(selectedFile)).Count() == 0)
-					collection.Add(new ItemFileInfo(selectedFile, type));
+					collection.Add(new ItemFileInfo(selectedFile));
 		}
 
 		public void RemoveFileFromList(object parameter) {
-			string param = parameter.ToString();
-
-			if (param.Equals("RemoveFileSber"))
-				RemoveSelectedItemsFromCollection(ListFileSber);
-			else if (param.Equals("RemoveFileVtb"))
-				RemoveSelectedItemsFromCollection(ListFileVtb);
+			RemoveSelectedItemsFromCollection(ListFilesTerminal);
 		}
 
 		private void RemoveSelectedItemsFromCollection(ObservableCollection<ItemFileInfo> collection) {
