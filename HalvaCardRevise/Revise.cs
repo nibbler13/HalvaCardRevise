@@ -98,6 +98,9 @@ namespace HalvaCardRevise {
 						}
 					}
 
+					if (coincidence == 0)
+						continue;
+
 					coincidence++;
 					halvaContent.CoincidenceSource = terminalFile.FullPath;
 					break;
@@ -156,14 +159,14 @@ namespace HalvaCardRevise {
 						coincidence++;
 					else {
 						errorTime = true;
-						halvaContent.Comment += "Время совершения транзакции; ";
+						comment += "Время совершения транзакции; ";
 					}
 				} else {
 					if (halvaTime.Equals(resultTime))
 						coincidence++;
 					else {
 						errorTime = true;
-						halvaContent.Comment += "Время совершения транзакции; ";
+						comment += "Время совершения транзакции; ";
 					}
 				}
 			} else {
@@ -171,7 +174,7 @@ namespace HalvaCardRevise {
 					coincidence++;
 				else {
 					errorTime = true;
-					halvaContent.Comment += "Время совершения транзакции; ";
+					comment += "Время совершения транзакции; ";
 				}
 			}
 

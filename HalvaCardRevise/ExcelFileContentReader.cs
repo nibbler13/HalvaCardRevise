@@ -116,12 +116,18 @@ namespace HalvaCardRevise {
 					string committingDate = GetCellValue(row.GetCell(cellCommittingDate));
 					string committingTime = GetCellValue(row.GetCell(cellCommittingTime));
 
-					if (type == FileType.SberbankOld || 
+					if (type == FileType.SberbankNew)
+						committingDate = GetCellValue(row.GetCell(cellCommittingDate), true);
+
+					if (type == FileType.SberbankOld ||
 						type == FileType.SberbankNew) {
 						string[] splittedDateTime = committingDate.Split(' ');
 						if (splittedDateTime.Length == 2) {
 							committingDate = splittedDateTime[0];
 							committingTime = splittedDateTime[1];
+
+							if (committingTime.Length == 7)
+								committingTime = "0" + committingTime;
 						}
 					}
 
@@ -160,11 +166,14 @@ namespace HalvaCardRevise {
 			return type.ToString();
 		}
 
-		private static string GetCellValue(ICell cell) {
+		private static string GetCellValue(ICell cell, bool isDate = false) {
 			object retValue = string.Empty;
 
 			if (cell == null)
 				return retValue.ToString();
+
+			if (isDate)
+				return cell.DateCellValue.ToShortDateString() + " " + cell.DateCellValue.ToLongTimeString();
 
 			switch (cell.CellType) {
 				case CellType.Unknown:
