@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 namespace HalvaCardRevise {
 	class ExcelFileContentReader {
 		private enum FileType {
-			Sberbank,
+			SberbankOld,
+			SberbankNew,
 			Vtb,
 			Soyuz,
 			Unknown
@@ -37,15 +38,21 @@ namespace HalvaCardRevise {
 				string firstValue = GetCellValue(row.GetCell(0)).ToLower();
 				if (firstValue.StartsWith("номер_терминала"))
 					type = FileType.Soyuz;
-				else if (firstValue.StartsWith("отчет о возмещении денежных средств предприятию"))
-					type = FileType.Sberbank;
+				else if (firstValue.StartsWith("отчет о возмещении денежных средств предприятию")) {
+
+					string secondValue = GetCellValue(sheet.GetRow(1).GetCell(0)).ToLower();
+					if (secondValue.Equals("номер транзакции"))
+						type = FileType.SberbankOld;
+					else
+						type = FileType.SberbankNew;
+				}
 				else if (firstValue.StartsWith("отчёт по обработанным операциям за период"))
 					type = FileType.Vtb;
 			} catch (Exception) { }
 
 
 			switch (type) {
-				case FileType.Sberbank:
+				case FileType.SberbankOld:
 					startRow = 2;
 					cellRNN = 0;
 					cellAuthorizationCode = 21;
@@ -53,6 +60,15 @@ namespace HalvaCardRevise {
 					cellCardNumber = 20;
 					cellCommittingDate = 8;
 					cellCommittingTime = 8;
+					break;
+				case FileType.SberbankNew:
+					startRow = 3;
+					cellRNN = -1;
+					cellAuthorizationCode = 9;
+					cellOperationAmount = 5;
+					cellCardNumber = 8;
+					cellCommittingDate = 2;
+					cellCommittingTime = 2;
 					break;
 				case FileType.Vtb:
 					startRow = 12;
@@ -83,12 +99,16 @@ namespace HalvaCardRevise {
 					if (row == null)  //null is when the row only contains empty cells 
 						continue;
 
-					string rnn = GetCellValue(row.GetCell(cellRNN));
+					string rnn = string.Empty;
+					
+					if (cellRNN != -1) {
+						rnn = GetCellValue(row.GetCell(cellRNN));
 
-					if (string.IsNullOrEmpty(rnn) ||
-						string.IsNullOrWhiteSpace(rnn) ||
-						!long.TryParse(rnn, out _))
-						continue;
+						if (string.IsNullOrEmpty(rnn) ||
+							string.IsNullOrWhiteSpace(rnn) ||
+							!long.TryParse(rnn, out _))
+							continue;
+					}
 
 					string authorizationCode = GetCellValue(row.GetCell(cellAuthorizationCode));
 					string operationAmount = GetCellValue(row.GetCell(cellOperationAmount));
@@ -96,7 +116,8 @@ namespace HalvaCardRevise {
 					string committingDate = GetCellValue(row.GetCell(cellCommittingDate));
 					string committingTime = GetCellValue(row.GetCell(cellCommittingTime));
 
-					if (type == FileType.Sberbank) {
+					if (type == FileType.SberbankOld || 
+						type == FileType.SberbankNew) {
 						string[] splittedDateTime = committingDate.Split(' ');
 						if (splittedDateTime.Length == 2) {
 							committingDate = splittedDateTime[0];

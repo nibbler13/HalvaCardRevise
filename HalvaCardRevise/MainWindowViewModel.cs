@@ -135,13 +135,10 @@ namespace HalvaCardRevise {
 					@"m_01-01-2019-31-01-2019_Филиал_ООО_Клиника_ЛМС_в_г_Краснодаре-ret_innxxx4391 - Краснодар.xlsx"));
 				ListFilesTerminal.Add(new ItemFileInfo(
 					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\ВТБ\" +
-					@"m_01-01-2019-31-01-2019_Филиал_ООО_Клиника_ЛМС_в_г_Уфе-ret_innxxx4391 - Уфа.xlsx"));
+					@"h_31-12-2018-01-02-2019_Филиал_ООО_Клиника_ЛМС_в_г_Уфе-ret_innxxx4391 - Уфа.xlsx"));
 				ListFilesTerminal.Add(new ItemFileInfo(
 					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\ВТБ\" +
-					@"m_15-01-2019-15-01-2019_ООО_Клиника_ЛМС_-ret_innxxx5391 - Сущевка, фрунзенская.xlsx"));
-				ListFilesTerminal.Add(new ItemFileInfo(
-					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\ВТБ\" +
-					@"m_15-01-2019-15-01-2019_ООО_Клиника_ЛМС_-ret_innxxx5391.xlsx"));
+					@"h_31-12-2018-01-02-2019_ООО_Клиника_ЛМС_-ret_innxxx5391 - Сущевка, фрунзенская.xlsx"));
 
 				ListFilesTerminal.Add(new ItemFileInfo(
 					@"C:\_Projects C#\HalvaCardRevise\Халва\2019 01 январь\Союз\" +

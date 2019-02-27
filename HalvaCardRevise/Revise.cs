@@ -61,7 +61,25 @@ namespace HalvaCardRevise {
 
 				int coincidence = 0;
 				foreach (ItemFileInfo terminalFile in terminalFiles) {
-					if (string.IsNullOrEmpty(halvaContent.UniqueOperationNumberRNN)) {
+					if (!string.IsNullOrEmpty(halvaContent.UniqueOperationNumberRNN)) {
+						FileContent terminalContent = terminalFile.FileContents.Where(
+							x => x.UniqueOperationNumberRNN.Equals(halvaContent.UniqueOperationNumberRNN)).FirstOrDefault();
+
+						if (terminalContent != null) {
+							halvaContent.CoincidenceRowNumber = terminalContent.CoincidenceRowNumber;
+
+							if (halvaContent.AuthorizationCode.Equals(terminalContent.AuthorizationCode))
+								coincidence++;
+							else
+								halvaContent.Comment += "Код авторизации; ";
+
+							CheckCoincidence(halvaContent, terminalContent, out int coin, out string comm);
+							coincidence += coin;
+							halvaContent.Comment += comm;
+						}
+					}
+
+					if (coincidence == 0) {
 						List<FileContent> searchResults = terminalFile.FileContents.Where(
 							x => x.AuthorizationCode.Equals(halvaContent.AuthorizationCode)).ToList();
 
@@ -71,30 +89,13 @@ namespace HalvaCardRevise {
 						foreach (FileContent terminalContent in searchResults) {
 							if (!CheckCoincidence(halvaContent, terminalContent, out int coin, out string comm))
 								continue;
-							
+
 							halvaContent.Comment += "Уникальный номер операции (RNN); ";
 							halvaContent.CoincidenceRowNumber = terminalContent.CoincidenceRowNumber;
 
 							coincidence += coin;
 							halvaContent.Comment += comm;
 						}
-					} else {
-						FileContent terminalContent = terminalFile.FileContents.Where(
-							x => x.UniqueOperationNumberRNN.Equals(halvaContent.UniqueOperationNumberRNN)).FirstOrDefault();
-
-						if (terminalContent == null)
-							continue;
-
-						halvaContent.CoincidenceRowNumber = terminalContent.CoincidenceRowNumber;
-
-						if (halvaContent.AuthorizationCode.Equals(terminalContent.AuthorizationCode))
-							coincidence++;
-						else
-							halvaContent.Comment += "Код авторизации; ";
-
-						CheckCoincidence(halvaContent, terminalContent, out int coin, out string comm);
-						coincidence += coin;
-						halvaContent.Comment += comm;
 					}
 
 					coincidence++;
