@@ -11,7 +11,7 @@ namespace HalvaCardRevise {
 		[Name("Дата обработки транзакции Банком")]
 		public string TransactionProcessingDate { get; set; }
 
-		[Name("Дата совершения транзации")]
+		[Name("Дата совершения транзакции")]
 		public string TransactionCommittingDate { get; set; }
 
 		[Name("Время совершения транзакции")]
@@ -50,7 +50,7 @@ namespace HalvaCardRevise {
 		[Name("Код авторизации")]
 		public string AuthorizationCode { get; set; }
 
-		[Name("Уникальный номер операции (RNN)")]
+		[Name("Уникальный номер операции (RRN)")]
 		public string UniqueOperationNumberRNN { get; set; }
 
 		[Ignore]

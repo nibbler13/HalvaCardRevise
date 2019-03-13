@@ -18,7 +18,7 @@ namespace HalvaCardRevise {
 		}
 		public static string ReadExcelFileContent(ItemFileInfo itemFileInfo) {
 			IWorkbook workbook;
-			using (FileStream file = new FileStream(itemFileInfo.FullPath, FileMode.Open, FileAccess.Read)) {
+			using (FileStream file = new FileStream(itemFileInfo.FullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
 				workbook = new XSSFWorkbook(file);
 			}
 
@@ -131,19 +131,19 @@ namespace HalvaCardRevise {
 						}
 					}
 
-					if (type == FileType.Soyuz) {
-						if (committingDate.Length == 8)
-							committingDate = 
-								committingDate.Substring(6, 2) + "." +
-								committingDate.Substring(4, 2) + "." +
-								committingDate.Substring(0, 4);
+					//if (type == FileType.Soyuz) {
+					//	if (committingDate.Length == 8)
+					//		committingDate = 
+					//			committingDate.Substring(6, 2) + "." +
+					//			committingDate.Substring(4, 2) + "." +
+					//			committingDate.Substring(0, 4);
 
-						if (committingTime.Length == 6)
-							committingTime =
-								committingTime.Substring(0, 2) + ":" +
-								committingTime.Substring(2, 2) + ":" +
-								committingTime.Substring(4, 2);
-					}
+					//	if (committingTime.Length == 6)
+					//		committingTime =
+					//			committingTime.Substring(0, 2) + ":" +
+					//			committingTime.Substring(2, 2) + ":" +
+					//			committingTime.Substring(4, 2);
+					//}
 
 					FileContent fileContent = new FileContent {
 						UniqueOperationNumberRNN = rnn,

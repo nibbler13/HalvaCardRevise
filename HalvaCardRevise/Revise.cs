@@ -139,8 +139,20 @@ namespace HalvaCardRevise {
 			if (halvaContent.TransactionCommittingDate.Equals(terminalContent.TransactionCommittingDate))
 				coincidence++;
 			else {
-				errorDate = true;
-				comment += "Дата совершения транзакции; ";
+				bool isDtHalvaParsed = DateTime.TryParse(halvaContent.TransactionCommittingDate, out DateTime dtHalva);
+				bool isDtTerminalParsed = DateTime.TryParse(terminalContent.TransactionCommittingDate, out DateTime dtTerminal);
+
+				if (isDtHalvaParsed && isDtTerminalParsed) {
+					if (dtHalva.Date == dtTerminal.Date) {
+						coincidence++;
+					} else {
+						errorDate = true;
+						comment += "Дата совершения транзакции; ";
+					}
+				} else {
+					errorDate = true;
+					comment += "Дата совершения транзакции; ";
+				}
 			}
 
 			int halvaTimeLength = halvaContent.TransactionCommitingTime.Length;
